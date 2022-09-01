@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\NewsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +19,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/test', function () {
+    return view('test-page');
+});
+
  
-Route::resource('companies', CompanyController::class);
-/*Route::resource('companies', 'CompanyController');
+/*Route::get('/hari', 'CompanyController@hariFunction')->name('hariRoute');
 */
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::resource('companies', CompanyController::class);
+Route::resource('news', NewsController::class);

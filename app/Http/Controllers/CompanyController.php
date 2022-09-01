@@ -3,9 +3,14 @@
 namespace App\Http\Controllers;
 use App\Models\Company;
 use Illuminate\Http\Request;
-
+use Auth;
+use Mail;
 class CompanyController extends Controller
 {
+        public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
     * Display a listing of the resource.
     *
@@ -13,8 +18,10 @@ class CompanyController extends Controller
     */
     public function index()
     {
+        $user = Auth::user();
         $companies = Company::orderBy('id','desc')->get();
-        return view('companies.index', compact('companies'));
+        $name = "Name";
+        return view('companies.index', compact('companies','name','user'));
     }
 
     /**
@@ -40,8 +47,26 @@ class CompanyController extends Controller
             'email' => 'required',
             'address' => 'required',
         ]);
-        
-        Company::create($request->post());
+
+          if($request->file('image')){
+            $file= $request->file('image');
+            $filename= date('YmdHi').$file->getClientOriginalName();
+            $file-> move(public_path('public/Image'), $filename);
+            $data['image']= $filename;
+        }
+
+        $result = Company::create($request->post());
+/*         if ($result) {
+                        $value = array(
+                        'name'              => $result->name,
+                        'email'             => $result->email,
+                        'subject'           => 'Your Details',
+                    );
+
+                    Mail::send('email.company-create', $value, function ($m) use ($value) {
+                        $m->to($value['email'])->subject($value['subject']);
+                    });
+                }*/
 
         return redirect()->route('companies.index')->with('success','Company has been created successfully.');
     }

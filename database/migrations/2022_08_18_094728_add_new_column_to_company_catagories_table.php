@@ -13,9 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('students', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('company_categories', function (Blueprint $table) {
+        $table->string('final_status')->after('status');
         });
     }
 
@@ -26,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('students');
+        Schema::table('company_categories', function (Blueprint $table) {
+        $table->dropColumn(['final_status']);
+        });
     }
 };

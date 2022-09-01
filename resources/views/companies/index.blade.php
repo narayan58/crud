@@ -3,14 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Company Details</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" >
+    <link rel="stylesheet" href="{{ asset('frontend/bootstrap.min.css') }}">
 </head>
 <body>
     <div class="container mt-2">
         <div class="row">
             <div class="col-lg-12 margin-tb">
                 <div class="pull-left">
+                    Hello {{ $user->name }} <br>
                     <h2>Company Details</h2>
+                </div>
+                <div class="pull-left mb-2">
+                    <a class="btn btn-success" href="{{ route('home') }}"> Dashboard</a>
                 </div>
                 <div class="pull-right mb-2">
                     <a class="btn btn-success" href="{{ route('companies.create') }}"> Create Company</a>
@@ -40,8 +44,9 @@
                         <td>{{ $company->email }}</td>
                         <td>{{ $company->address }}</td>
                         <td>
-                            <form action="{{ route('companies.destroy',$company->id) }}" method="Post">
+                                <a class="btn btn-success" href="{{ route('companies.show',$company->id) }}">Show</a>
                                 <a class="btn btn-primary" href="{{ route('companies.edit',$company->id) }}">Edit</a>
+                            <form action="{{ route('companies.destroy',$company->id) }}" method="Post">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">Delete</button>
