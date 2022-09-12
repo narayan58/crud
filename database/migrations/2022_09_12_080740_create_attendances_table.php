@@ -13,8 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-        $table->string('status')->after('password');
+        Schema::create('attendances', function (Blueprint $table) {
+            $table->id();
+            $table->integer('student_id');
+            $table->date('date');
+            $table->enum('status', ['1', '0'])->nullable();
+            $table->timestamps();
         });
     }
 
@@ -25,8 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-        $table->dropColumn(['status']);
-        });
+        Schema::dropIfExists('attendances');
     }
 };
